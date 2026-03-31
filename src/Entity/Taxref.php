@@ -87,12 +87,12 @@ class Taxref
         return $this;
     }
 
-    public function getSynnonymes(): Collection
+    public function getSynonymes(): Collection
     {
         return $this->synonymes;
     }
 
-    public function addSynnonyme(Taxref $synonyme): static
+    public function addSynonyme(Taxref $synonyme): static
     {
         if (!$this->synonymes->contains($synonyme)) {
             $this->synonymes->add($synonyme);
@@ -101,10 +101,15 @@ class Taxref
         return $this;
     }
 
-    public function removeSynnonyme(Taxref $synonyme): static
+    public function removeSynonyme(Taxref $synonyme): static
     {
         $this->synonymes->removeElement($synonyme);
 
         return $this;
+    }
+
+    public function getNomValide(): ?Taxref
+    {
+        return $this->nomValide;
     }
 }
