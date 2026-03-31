@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{{ plant.nomCompletHtml|raw }}</h1>
+
+<h3>Synonymes</h3>
+<ul>
+    {% for syn in synonymes %}
+        {% if syn.cdNom != plant.cdNom %}
+            <li>{{ syn.nomCompletHtml|raw }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}

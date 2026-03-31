@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Recherche de plante</h1>
+
+<input type="text" id="search" placeholder="Rechercher une plante...">
+
+<ul id="results"></ul>
+
+<script>
+document.getElementById('search').addEventListener('input', async function() {
+    let q = this.value;
+
+    if (q.length < 2) return;
+
+    let res = await fetch('/search?q=' + q);
+    let data = await res.json();
+
+    let ul = document.getElementById('results');
+    ul.innerHTML = '';
+
+    data.forEach(item => {
+        let li = document.createElement('li');
+        li.textContent = item.label;
+
+        li.onclick = () => {
+            window.location.href = '/plant/' + item.id;
+        };
+
+        ul.appendChild(li);
+    });
+});
+</script>
+{% endblock %}

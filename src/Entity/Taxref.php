@@ -11,15 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Taxref
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?int $cd_nom = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    private ?string $cd_nom = null;
-
-    #[ORM\Column(type: Types::BIGINT)]
-    private ?string $cd_ref = null;
+    private ?int $cd_ref = null;
 
     #[ORM\Column(length: 255)]
     private ?string $famille = null;
@@ -34,29 +30,25 @@ class Taxref
     #[ORM\OneToMany(targetEntity: Taxref::class, mappedBy: "nomValide")]
     private Collection $synonymes;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
-    public function getCdNom(): ?string
+    public function getCdNom(): ?int
     {
         return $this->cd_nom;
     }
 
-    public function setCdNom(string $cd_nom): static
+    public function setCdNom(int $cd_nom): static
     {
         $this->cd_nom = $cd_nom;
 
         return $this;
     }
 
-    public function getCdRef(): ?string
+    public function getCdRef(): ?int
     {
         return $this->cd_ref;
     }
 
-    public function setCdRef(string $cd_ref): static
+    public function setCdRef(int $cd_ref): static
     {
         $this->cd_ref = $cd_ref;
 
