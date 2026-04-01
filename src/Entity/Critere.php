@@ -61,12 +61,19 @@ class Critere
         return $this;
     }
 
-      public function getSynonymes(): Collection
+    public function removeImage (Image $image): static
+    {
+        $this->images->removeElement($image);
+
+        return $this;
+    }
+
+    public function getImages(): Collection
     {
         return $this->images;
     }
 
-    public function addSynonyme(Taxref $image): static
+    public function addImage(Image $image): static
     {
         if (!$this->images->contains($image)) {
             $this->images->add($image);
@@ -75,9 +82,9 @@ class Critere
         return $this;
     }
 
-    public function removeSynonyme(Taxref $image): static
+    public function setPlante(Taxref $plante): static
     {
-        $this->images->removeElement($image);
+        $this->plante = $plante;
 
         return $this;
     }

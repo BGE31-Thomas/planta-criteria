@@ -11,4 +11,13 @@
         {% endif %}
     {% endfor %}
 </ul>
+
+<h3>Critères</h3>
+<ul>
+    {% for crt in plant.criteres %}
+        <li>{{ crt.organe}} {{ crt.description }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{{path('app_admin_critere_add',{ id: plant.cdNom })}}">Ajouter un critère</a>
 {% endblock %}
