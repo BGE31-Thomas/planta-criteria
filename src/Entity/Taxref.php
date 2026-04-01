@@ -30,6 +30,9 @@ class Taxref
     #[ORM\OneToMany(targetEntity: Taxref::class, mappedBy: "nomValide")]
     private Collection $synonymes;
 
+    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "plante")]
+    private Collection $criteres;
+
 
     public function getCdNom(): ?int
     {
@@ -104,4 +107,26 @@ class Taxref
     {
         return $this->nomValide;
     }
+
+     public function getCriteres(): Collection
+    {
+        return $this->criteres;
+    }
+
+    public function addCritere(Taxref $critere): static
+    {
+        if (!$this->criteres->contains($critere)) {
+            $this->criteres->add($critere);
+        }
+
+        return $this;
+    }
+
+    public function removeCritere(Taxref $critere): static
+    {
+        $this->criteres->removeElement($critere);
+
+        return $this;
+    }
+
 }
