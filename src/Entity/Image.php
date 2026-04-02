@@ -23,7 +23,7 @@ class Image
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Critere::class)]
+    #[ORM\ManyToOne(targetEntity: Critere::class, inversedBy: "images")]
     #[ORM\JoinColumn(name: "critere_id", referencedColumnName: "id")]
     private ?Critere $critere;
 
@@ -71,5 +71,12 @@ class Image
     public function getCritere(): ?Critere
     {
         return $this->critere;
+    }
+
+      public function setCritere(?Critere $critere): static
+    {
+        $this->critere = $critere;
+
+        return $this;
     }
 }

@@ -15,7 +15,17 @@
 <h3>Critères</h3>
 <ul>
     {% for crt in plant.criteres %}
-        <li>{{ crt.organe}} {{ crt.description }}</li>
+        <li>
+            {{ crt.organe}} {{ crt.description }} 
+            <a href="{{path('app_admin_critere_edit',{ id: crt.id, idPlante: plant.cdNom })}}">Modifier</a>
+          
+                {% for image in crt.images %}
+                    <div>
+                        <img src="{{asset('assets/uploads/criteres/mini/300x300-' ~ image.chemin)}}" alt="{{image.description}}" width="150"/>
+                    </div>
+                {% endfor %}
+            
+        </li>
     {% endfor %}
 </ul>
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CritereRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +32,11 @@ class Critere
     #[ORM\OneToOne(targetEntity: Source::class)]
     #[ORM\JoinColumn(name: "source_id", referencedColumnName: "id")]
     private ?Source $source;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection(); 
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +83,7 @@ class Critere
     {
         if (!$this->images->contains($image)) {
             $this->images->add($image);
+            $image->setCritere($this); 
         }
 
         return $this;

@@ -9,4 +9,5 @@
 /var/
 /vendor/
 Taxref.csv
+/public/assets/uploads/criteres/
 ###< symfony/framework-bundle ###

@@ -1,12 +1,12 @@
 {{form_start(critereForm)}}
     {{ form_row(critereForm.organe) }}
     {{ form_row(critereForm.description) }}
-    {% if app.request.attributes.get('_route') == 'app_admin_products_edit' %}
+    {% if app.request.attributes.get('_route') == 'app_admin_critere_edit' %}
         <h2>Images</h2>
-        {% for image in product.images %}
+        {% for image in critere.images %}
             <div>
-                <img src="{{asset('assets/uploads/products/mini/300x300-' ~ image.name)}}" alt="{{image.name}}" width="150"/>
-                <a href="{{path('app_admin_products_delete_image',{id:image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">Supprimer</a>
+                <img src="{{asset('assets/uploads/criteres/mini/300x300-' ~ image.chemin)}}" alt="{{image.description}}" width="150"/>
+                {# <a href="{{path('app_admin_criteres_delete_image',{id:image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">Supprimer</a> #}
             </div>
         {% endfor %}
     {% endif %}

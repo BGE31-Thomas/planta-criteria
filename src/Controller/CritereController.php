@@ -8,7 +8,6 @@ use App\Form\CritereFormType;
 use App\Service\PicturesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,17 +45,20 @@ final class CritereController extends AbstractController
             $critere->setPlante($em->getReference('App\Entity\Taxref', $id));
             $images = $critereForm->get('images')->getData();
 
+            $em->persist($critere);
+
             foreach($images as $image){
-                $folder = 'products';
+                $folder = 'criteres';
                 $fichier = $picturesService->add($image,$folder,300,300);
+
                 $img = new Image();
-                $img->setDescription($fichier);
+                $img->setChemin($fichier);
+
                 $critere->addImage($img);
 
+                $em->persist($img);
             }
-            
 
-            $em->persist($critere);
             $em->flush();
 
             $this->addFlash('success','Critère ajouté avec succès');
@@ -68,12 +70,13 @@ final class CritereController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id}', name: 'edit')]
+    #[Route('/edit/{id}/{idPlante}', name: 'edit')]
     public function edit(
         Critere $critere,
         Request $request,
         EntityManagerInterface $em,
-        /* PicturesService $picturesService */): Response
+        PicturesService $picturesService,
+        int $idPlante): Response
     {
         /* $this->denyAccessUnlessGranted('PRODUCT_EDIT',$critere); */
 
@@ -82,33 +85,37 @@ final class CritereController extends AbstractController
         $critereForm->handleRequest($request);
 
         if($critereForm->isSubmitted() AND $critereForm->isValid()){
+            $critere->setPlante($em->getReference('App\Entity\Taxref', $idPlante));
+            $images = $critereForm->get('images')->getData();
 
-            /* $images = $productForm->get('images')->getData();
+            $em->persist($critere);
 
             foreach($images as $image){
-                $folder = 'products';
+                $folder = 'criteres';
                 $fichier = $picturesService->add($image,$folder,300,300);
-                $img = new Images();
-                $img->setName($fichier);
+
+                $img = new Image();
+                $img->setChemin($fichier);
+
                 $critere->addImage($img);
 
+                $em->persist($img);
             }
- */
-            $em->persist($critere);
+
             $em->flush();
 
             $this->addFlash('success','Produit ajouté avec succès');
 
-            return $this->redirectToRoute('app_admin_products_index');
+            return $this->redirectToRoute('app_plant_show', ['id' => $idPlante]);
         }
 
-        return $this->render('critere/index.html.twig', [
-            'productForm' => $critereForm->createView(),
-            'product' => $critere
+        return $this->render('critere/edit.html.twig', [
+            'critereForm' => $critereForm->createView(),
+            'critere' => $critere
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
+   /*  #[Route('/delete/{id}', name: 'delete')]
     public function delete(Critere $critere,EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('PRODUCT_DELETE',$critere,);
@@ -117,7 +124,7 @@ final class CritereController extends AbstractController
         $em->flush(); 
         return $this->redirectToRoute('app_admin_products_index');
         
-    }
+    } */
 
     /* #[Route('/delete/image/{id}', name: 'delete_image')]
     public function deleteImage(
