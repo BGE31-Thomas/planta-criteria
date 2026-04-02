@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 #[Route('/admin/critere', name: 'app_admin_critere_')]
@@ -115,34 +116,49 @@ final class CritereController extends AbstractController
         ]);
     }
 
-   /*  #[Route('/delete/{id}', name: 'delete')]
-    public function delete(Critere $critere,EntityManagerInterface $em): Response
+    #[Route('/delete/{id}/{idPlante}', name: 'delete')]
+    public function delete(Critere $critere,EntityManagerInterface $em, int $idPlante): Response
     {
         $this->denyAccessUnlessGranted('PRODUCT_DELETE',$critere,);
         
         $em->remove($critere);
         $em->flush(); 
-        return $this->redirectToRoute('app_admin_products_index');
+         return $this->redirectToRoute('app_plant_show', ['id' => $idPlante]);
         
-    } */
+    }
 
-    /* #[Route('/delete/image/{id}', name: 'delete_image')]
+    #[Route('/admin/critere/image/{id}/delete', name: 'delete_image', methods: ['DELETE'])]
     public function deleteImage(
-        Image $image,
+        ?Image $image,
         Request $request,
         EntityManagerInterface $em,
-        PicturesService $picturesService): JsonResponse
+        PicturesService $picturesService
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(),true);
-        if($this->isCsrfTokenValid('delete'.$image->getId(),$data['_token'])){
-            $nom = $image->getName();
-            if($picturesService->delete($nom,'products',300,300)){
+        if (!$image) {
+            return new JsonResponse(['error' => 'Image introuvable'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['_token'])) {
+            return new JsonResponse(['error' => 'Token manquant'], 400);
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])) {
+
+            $nom = $image->getChemin();
+
+            if ($picturesService->delete($nom, 'criteres', 300, 300)) {
                 $em->remove($image);
                 $em->flush();
-                return new JsonResponse(['success' => true],200);
+
+                return new JsonResponse(['success' => true], 200);
             }
-            return new JsonResponse(['error' => 'Erreur de suppression'],400);
+
+            return new JsonResponse(['error' => 'Erreur de suppression'], 400);
         }
-        return new JsonResponse(['error' => 'Token invalide'],400);
-    } */
+
+        return new JsonResponse(['error' => 'Token invalide'], 400);
+    }
 }

@@ -5,8 +5,8 @@
         <h2>Images</h2>
         {% for image in critere.images %}
             <div>
-                <img src="{{asset('assets/uploads/criteres/mini/300x300-' ~ image.chemin)}}" alt="{{image.description}}" width="150"/>
-                {# <a href="{{path('app_admin_criteres_delete_image',{id:image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">Supprimer</a> #}
+                <img src="{{asset('assets/uploads/criteres/mini/300x300-' ~ image.chemin)}}" alt="{{image.description}}" width="300"/>
+                <a href="{{path('app_admin_critere_delete_image',{id:image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">Supprimer</a>
             </div>
         {% endfor %}
     {% endif %}

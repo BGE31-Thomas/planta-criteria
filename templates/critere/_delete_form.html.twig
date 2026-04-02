@@ -1,0 +1,10 @@
+<form method="post"
+      action="{{ path('app_admin_critere_delete_image', { id: image.id }) }}"
+      onsubmit="return confirm('Confirmer la suppression ?');">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ image.id) }}">
+
+    <button type="submit" class="btn btn-danger">
+        Supprimer
+    </button>
+</form>
