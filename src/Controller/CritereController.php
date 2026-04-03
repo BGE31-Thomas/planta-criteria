@@ -37,7 +37,7 @@ final class CritereController extends AbstractController
        /*  $this->denyAccessUnlessGranted('ROLE_ADMIN'); */
 
         $critere = new Critere();
-
+        
         $critereForm = $this->createForm(CritereFormType::class, $critere);
 
         $critereForm->handleRequest($request);

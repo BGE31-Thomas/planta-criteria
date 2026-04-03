@@ -1,0 +1,7 @@
+{{form_start(sourceForm)}}
+    {{ form_row(sourceForm.titre) }}
+    {{ form_row(sourceForm.auteur) }}
+    {{ form_row(sourceForm.annee) }}
+
+    <button type="submit" class="btn btn-primary">{{button_label |default('Ajouter')}}</button>
+{{ form_end(sourceForm) }}
