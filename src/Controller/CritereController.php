@@ -71,13 +71,13 @@ final class CritereController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id}/{idPlante}', name: 'edit')]
+    #[Route('/edit/{id}/{idPlante}', name: 'edit', defaults: ['idPlante' => null])]
     public function edit(
         Critere $critere,
         Request $request,
         EntityManagerInterface $em,
         PicturesService $picturesService,
-        int $idPlante): Response
+        ?int $idPlante): Response
     {
         /* $this->denyAccessUnlessGranted('PRODUCT_EDIT',$critere); */
 

@@ -25,7 +25,7 @@ class CritereFormType extends AbstractType
 
             ->add('source', EntityType::class, [
                 'class' => Source::class,
-                'choice_label' => 'nom',
+                'choice_label' => 'titre',
                 'label' => 'Source',
                 'multiple' => false,
                 'placeholder' => 'Choisir une source',

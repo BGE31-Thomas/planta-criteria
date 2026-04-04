@@ -29,9 +29,9 @@ class Critere
     #[ORM\JoinColumn(name: "plante_id", referencedColumnName: "cd_nom")]
     private ?Taxref $plante;
 
-    #[ORM\OneToOne(targetEntity: Source::class)]
-    #[ORM\JoinColumn(name: "source_id", referencedColumnName: "id")]
-    private ?Source $source;
+    #[ORM\ManyToOne(targetEntity: Source::class)]
+    #[ORM\JoinColumn(name: "source_id", referencedColumnName: "id", nullable: true)]
+    private ?Source $source = null;
 
     public function __construct()
     {
@@ -101,9 +101,15 @@ class Critere
         return $this->plante;
     }
 
-     public function getSource(): ?Source
+    public function getSource(): ?Source
     {
         return $this->source;
     }
 
+    public function setSource(?Source $source): static
+    {
+        $this->source = $source;
+
+        return $this;
+    }
 }

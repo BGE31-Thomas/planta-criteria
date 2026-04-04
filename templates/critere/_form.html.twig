@@ -2,7 +2,7 @@
     {{ form_row(critereForm.organe) }}
     {{ form_row(critereForm.description) }}
     {{ form_row(critereForm.source) }}
-    <a href="{{ path('app_admin_source_add') }}" target="_blank">
+    <a href="{{ path('app_admin_source_add', {'idCritere': critere.id}) }}" target="_blank">
         Ajouter une source
     </a>
     {% if app.request.attributes.get('_route') == 'app_admin_critere_edit' %}

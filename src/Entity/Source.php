@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SourceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: SourceRepository::class)]
 class Source
@@ -21,6 +22,9 @@ class Source
 
     #[ORM\Column(nullable: true)]
     private ?int $annee = null;
+
+    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "source")]
+    private Collection $criteres;
 
     public function getId(): ?int
     {
@@ -63,5 +67,28 @@ class Source
         return $this;
     }
 
+    public function removeCritere(Critere $critere): static
+    {
+        if ($this->criteres->contains($critere)) {
+            $this->criteres->removeElement($critere);
+        }
+
+        return $this;
+    }
+
+    public function getCriteres(): Collection
+    {
+        return $this->criteres;
+    }
+
+    public function addCritere(Critere $critere): static
+    {
+        if (!$this->criteres->contains($critere)) {
+            $this->criteres->add($critere);
+            $critere->setSource($this); 
+        }
+
+        return $this;
+    }
    
 }
