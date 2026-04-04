@@ -35,9 +35,18 @@ final class SearchController extends AbstractController
 
         $synonymes = $repo->findBy(['cd_ref' => $taxref->getCdNom()]);
 
+        $criteres = $taxref->getCriteres()->toArray();
+
+        usort($criteres, function($a, $b) {
+            $sourceA = $a->getSource() ? $a->getSource()->getTitre() : '';
+            $sourceB = $b->getSource() ? $b->getSource()->getTitre() : '';
+            return strcmp($sourceA, $sourceB);
+        });
+
         return $this->render('plante.html.twig', [
             'plant' => $taxref,
-            'synonymes' => $synonymes
+            'synonymes' => $synonymes,
+            'criteres' => $criteres 
         ]);
     }
 

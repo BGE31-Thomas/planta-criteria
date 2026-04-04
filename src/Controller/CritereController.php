@@ -127,7 +127,7 @@ final class CritereController extends AbstractController
         
     }
 
-    #[Route('/admin/critere/image/{id}/delete', name: 'delete_image', methods: ['DELETE'])]
+    #[Route('/image/{id}/delete', name: 'delete_image', methods: ['DELETE'])]
     public function deleteImage(
         ?Image $image,
         Request $request,
