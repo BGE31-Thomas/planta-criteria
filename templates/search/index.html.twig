@@ -21,7 +21,7 @@ document.getElementById('search').addEventListener('input', async function() {
 
     data.forEach(item => {
         let li = document.createElement('li');
-        li.textContent = item.label;
+        li.innerHTML = item.label;
 
         li.onclick = () => {
             window.location.href = '/plant/' + item.id;
