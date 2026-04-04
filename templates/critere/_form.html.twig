@@ -1,10 +1,14 @@
 {{form_start(critereForm)}}
-    {{ form_row(critereForm.organe) }}
-    {{ form_row(critereForm.description) }}
     {{ form_row(critereForm.source) }}
-    <a href="{{ path('app_admin_source_add', {'idCritere': critere.id}) }}" target="_blank">
+   
+    <a href="{{ path('app_admin_source_add', { redirect: app.request.uri }) }}" target="_blank">
         Ajouter une source
     </a>
+
+    {{ form_row(critereForm.organe) }}
+    {{ form_row(critereForm.description) }}
+    
+    
     {% if app.request.attributes.get('_route') == 'app_admin_critere_edit' %}
         <h2>Images</h2>
         {% for image in critere.images %}

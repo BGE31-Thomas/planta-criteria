@@ -21,8 +21,8 @@ final class SourceController extends AbstractController
         ]);
     }
 
-    #[Route('/add/{idCritere}', name: 'add')]
-    public function new(Request $request, EntityManagerInterface $em,int $idCritere): Response
+    #[Route('/add', name: 'add')]
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $source = new Source();
         $sourceForm = $this->createForm(SourceFormType::class, $source);
@@ -33,7 +33,14 @@ final class SourceController extends AbstractController
             $em->persist($source);
             $em->flush();
 
-            return $this->redirectToRoute('app_admin_critere_edit', ['id' => $idCritere]);
+            $redirectUrl = $request->query->get('redirect');
+
+            if ($redirectUrl) {
+                return $this->redirect($redirectUrl);
+            }
+
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('source/add.html.twig', [
