@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Snappy\Pdf;
+
 
 final class SearchController extends AbstractController
 {
@@ -26,7 +28,6 @@ final class SearchController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        // 🔁 Si synonyme → aller vers le nom valide
         if ($taxref->getCdNom() !== $taxref->getCdRef()) {
             return $this->redirectToRoute('app_plant_show', [
                 'id' => $taxref->getCdRef()
@@ -48,6 +49,33 @@ final class SearchController extends AbstractController
             'synonymes' => $synonymes,
             'criteres' => $criteres 
         ]);
+    }
+
+    #[Route('/export/pdf/{id}', name: 'app_export_pdf')]
+    public function exportPdf(Pdf $knpSnappyPdf, int $id, TaxrefRepository $repo): Response
+    {
+        $plant = $repo->find($id);
+        $criteres = $plant->getCriteres()->toArray();
+        $synonymes = $repo->findBy(['cd_ref' => $plant->getCdNom()]);
+
+        $html = $this->renderView('export.html.twig', [
+            'plant' => $plant,
+            'criteres' => $criteres,
+            'synonymes' => $synonymes,
+        ]);
+
+        $pdf = $knpSnappyPdf->getOutputFromHtml($html, [
+            'enable-local-file-access' => true,
+        ]);
+
+        return new Response(
+            $pdf,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="plante.pdf"'
+            ]
+        );
     }
 
     #[Route('/search', name: 'app_search')]

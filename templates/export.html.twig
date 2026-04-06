@@ -32,8 +32,7 @@
 
                 <li>
                     {{ crt.organe }} {{ crt.description }}
-                    <a href="{{ path('app_admin_critere_edit', { id: crt.id, idPlante: plant.cdNom }) }}">Modifier</a>
-
+                    
                     {% for image in crt.images %}
                         <div class="mt-2">
                             <img src="{{ absolute_url(asset('assets/uploads/criteres/' ~ image.chemin)) }}"
@@ -44,12 +43,4 @@
     {% endfor %}
             </ul>
 
-
-<a href="{{path('app_admin_critere_add',{ id: plant.cdNom })}}">Ajouter un critère</a>
-
-<div>
-    <a href="{{ path('app_export_pdf', { id: plant.cdNom }) }}" target="_blank">
-        <button class="btn btn-primary mt-4">Exporter en PDF</button>
-    </a>
-</div>
 {% endblock %}
