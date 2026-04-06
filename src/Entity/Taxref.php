@@ -23,9 +23,12 @@ class Taxref
     #[ORM\Column(length: 255)]
     private ?string $nom_complet_html = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
     #[ORM\ManyToOne(targetEntity: Taxref::class)]
     #[ORM\JoinColumn(name: "cd_ref", referencedColumnName: "cd_nom")]
-    private ?Taxref $nomValide;
+    private Taxref $nomValide;
 
     #[ORM\OneToMany(targetEntity: Taxref::class, mappedBy: "nomValide")]
     private Collection $synonymes;
@@ -125,6 +128,25 @@ class Taxref
     public function removeCritere(Taxref $critere): static
     {
         $this->criteres->removeElement($critere);
+
+        return $this;
+    }
+
+    public function setNomValide(?Taxref $nomValide): static
+    {
+        $this->nomValide = $nomValide;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
 
         return $this;
     }

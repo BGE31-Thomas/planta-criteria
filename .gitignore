@@ -8,7 +8,7 @@
 /public/bundles/
 /var/
 /vendor/
-Taxref.csv
+/TAXREFv18.csv
 /public/assets/uploads/criteres/
 ###< symfony/framework-bundle ###
 

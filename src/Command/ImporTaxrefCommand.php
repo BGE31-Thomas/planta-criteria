@@ -66,6 +66,7 @@ class ImporTaxrefCommand extends Command
 		$taxref = new Taxref();
 		$taxref->setCdNom((int) $row[$columns['CD_NOM']]);
 		$taxref->setCdRef((int) $row[$columns['CD_REF']]);
+		$taxref->setNom($row[$columns['NOM_COMPLET']]);
 		$taxref->setNomCompletHtml($row[$columns['NOM_COMPLET_HTML']]);
 		$taxref->setFamille($row[$columns['FAMILLE']]);
 		/* $taxref->setRang($row[$columns['RANG']]); */

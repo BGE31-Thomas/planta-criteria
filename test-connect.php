@@ -4,11 +4,13 @@ require __DIR__.'/vendor/autoload.php';
 use Doctrine\DBAL\DriverManager;
 
 $connectionParams = [
-    'dbname' => 'plantsobs',
-    'user' => 'root',
+    'dbname' => 'plantobs',
+    'user' => 'plantthom',
     'password' => 'root',
     'host' => '127.0.0.1',
-    'driver' => 'pdo_mysql',
+    'port' => 5432,
+    'driver' => 'pdo_pgsql',
+    'serverVersion' => '15', // adapte à ta version
 ];
 
 $conn = DriverManager::getConnection($connectionParams);
