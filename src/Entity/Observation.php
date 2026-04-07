@@ -15,7 +15,7 @@ class Observation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $date_heure = null;
 
     #[ORM\Column(length: 255)]
@@ -63,20 +63,19 @@ class Observation
         return $this->observationsCritere;
     }
 
-    public function addObservationsCritere(ObservationCritere $observationsCritere): static
+    public function addObservationsCritere(ObservationCritere $oc): self
     {
-        if (!$this->observationsCritere->contains($observationsCritere)) {
-            $this->observationsCritere->add($observationsCritere);
-            $observationsCritere->setObservation($this);
+        if (!$this->observationsCritere->contains($oc)) {
+            $this->observationsCritere[] = $oc;
+            $oc->setObservation($this); 
         }
-
+    
         return $this;
     }
 
     public function removeObservationsCritere(ObservationCritere $observationsCritere): static
     {
         if ($this->observationsCritere->removeElement($observationsCritere)) {
-            // set the owning side to null (unless already changed)
             if ($observationsCritere->getObservation() === $this) {
                 $observationsCritere->setObservation(null);
             }

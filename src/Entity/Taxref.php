@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TaxrefRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,6 +36,12 @@ class Taxref
 
     #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "plante")]
     private Collection $criteres;
+
+     public function __construct()
+    {
+        $this->synonymes = new ArrayCollection();
+        $this->criteres = new ArrayCollection();
+    }
 
 
     public function getCdNom(): ?int

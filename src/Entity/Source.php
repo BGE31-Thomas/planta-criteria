@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SourceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SourceRepository::class)]
 class Source
@@ -25,6 +26,11 @@ class Source
 
     #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "source")]
     private Collection $criteres;
+
+     public function __construct()
+    {
+        $this->criteres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

@@ -55,6 +55,7 @@ final class SearchController extends AbstractController
     public function exportPdf(Pdf $knpSnappyPdf, int $id, TaxrefRepository $repo): Response
     {
         $plant = $repo->find($id);
+        $nom = $plant->getNomCompletHtml();
         $criteres = $plant->getCriteres()->toArray();
         $synonymes = $repo->findBy(['cd_ref' => $plant->getCdNom()]);
 
@@ -73,7 +74,7 @@ final class SearchController extends AbstractController
             200,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="plante.pdf"'
+                'Content-Disposition' => 'inline; filename="' . $nom . '.pdf"'
             ]
         );
     }
