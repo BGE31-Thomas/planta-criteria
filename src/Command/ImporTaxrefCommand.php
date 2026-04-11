@@ -41,16 +41,14 @@ class ImporTaxrefCommand extends Command
 	    $filePath = __DIR__ . '/../../TAXREFv18.csv';
 
 	    if (!file_exists($filePath)) {
-		$output->writeln('Fichier introuvable');
-		return Command::FAILURE;
+			$output->writeln('Fichier introuvable');
+			return Command::FAILURE;
 	    }
 
 	    $handle = fopen($filePath, 'r');
 
-	    // 🔹 Lire l'en-tête
 	    $header = fgetcsv($handle, 0, "\t");
 
-	    // Mapper les index des colonnes
 	    $columns = array_flip($header);
 
 	    $batchSize = 500;
@@ -58,28 +56,26 @@ class ImporTaxrefCommand extends Command
 
 	    while (($row = fgetcsv($handle, 0, "\t")) !== false) {
 
-		// 🔥 Filtre plantes uniquement
-		if ($row[$columns['REGNE']] !== 'Plantae') {
-		    continue;
-		}
+			if ($row[$columns['REGNE']] !== 'Plantae') {
+				continue;
+			}
 
-		$taxref = new Taxref();
-		$taxref->setCdNom((int) $row[$columns['CD_NOM']]);
-		$taxref->setCdRef((int) $row[$columns['CD_REF']]);
-		$taxref->setNom($row[$columns['NOM_COMPLET']]);
-		$taxref->setNomCompletHtml($row[$columns['NOM_COMPLET_HTML']]);
-		$taxref->setFamille($row[$columns['FAMILLE']]);
-		/* $taxref->setRang($row[$columns['RANG']]); */
+			$taxref = new Taxref();
+			$taxref->setCdNom((int) $row[$columns['CD_NOM']]);
+			$taxref->setCdRef((int) $row[$columns['CD_REF']]);
+			$taxref->setNom($row[$columns['NOM_COMPLET']]);
+			$taxref->setNomCompletHtml($row[$columns['NOM_COMPLET_HTML']]);
+			$taxref->setFamille($row[$columns['FAMILLE']]);
+			/* $taxref->setRang($row[$columns['RANG']]); */
 
-		$this->entityManager->persist($taxref);
+			$this->entityManager->persist($taxref);
 
-		// ⚡ Batch pour performance
-		if (($i % $batchSize) === 0) {
-		    $this->entityManager->flush();
-		    $this->entityManager->clear();
-		}
+			if (($i % $batchSize) === 0) {
+				$this->entityManager->flush();
+				$this->entityManager->clear();
+			}
 
-		$i++;
+			$i++;
 	    }
 
 	    fclose($handle);

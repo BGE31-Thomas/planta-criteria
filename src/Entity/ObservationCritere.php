@@ -22,8 +22,9 @@ class ObservationCritere
     #[ORM\JoinColumn(nullable: false)]
     private ?Critere $critere = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $valeur = false;
+    #[ORM\ManyToOne(inversedBy: 'observationsCritere')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Statut $statut = null;
 
     public function getId(): ?int
     {
@@ -52,14 +53,14 @@ class ObservationCritere
         return $this;
     }
 
-    public function isValeur(): bool
+    public function getStatut(): ?Statut
     {
-        return $this->valeur;
+        return $this->statut;
     }
 
-    public function setValeur(bool $valeur): self
+    public function setStatut(?Statut $statut): self
     {
-        $this->valeur = $valeur;
+        $this->statut = $statut;
         return $this;
     }
 }
