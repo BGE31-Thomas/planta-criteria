@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Observation;
 use App\Entity\ObservationCritere;
+use App\Entity\Statut;
 use App\Entity\Taxref;
 use App\Form\ObservationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,14 +31,13 @@ final class ObservationController extends AbstractController
         
         $plante = $em->getRepository(Taxref::class)->find($idPlante);
 
-        // Accès forcé aux collections
         $criteres = $plante->getCriteres();
 
        
         foreach ($criteres as $critere) {
             $oc = new ObservationCritere();
             $oc->setCritere($critere);
-            $oc->setValeur(false);
+            $oc->setStatut($em->getRepository(Statut::class)->findOneBy(['libelle' => 'Non vérifié']));
             
             $observation->addObservationsCritere($oc);
         }

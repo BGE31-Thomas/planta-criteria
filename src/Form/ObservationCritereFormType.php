@@ -1,11 +1,12 @@
 <?php
 namespace App\Form;
 
+use App\Entity\ObservationCritere;
+use App\Entity\Statut;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\ObservationCritere;
 
 class ObservationCritereFormType extends AbstractType
 {
@@ -13,8 +14,12 @@ class ObservationCritereFormType extends AbstractType
     {
         $builder
             
-            ->add('valeur', CheckboxType::class, [
-                'required' => false,
+            ->add('statut', EntityType::class, [
+                'class' => Statut::class,
+                'choice_label' => 'libelle',
+                'label' => 'Statut',
+                'multiple' => false,
+                'placeholder' => 'Choisir un statut',
             ]);
     }
 

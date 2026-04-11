@@ -1,17 +1,20 @@
 {{ form_start(observationForm) }}
 
+{{ form_row(observationForm.date_heure) }}
+{{ form_row(observationForm.lieu) }}
+
 <table>
     <tr>
         <th>Organe</th>
         <th>Description</th>
-        <th>Vérifié</th>
+        <th>Statut</th>
     </tr>
 
     {% for oc in observationForm.observationsCritere %}
         <tr>
             <td>{{ oc.vars.data.critere.organe }}</td>
             <td>{{ oc.vars.data.critere.description }}</td>
-            <td>{{ form_widget(oc.valeur) }}</td>
+            <td>{{ form_widget(oc.statut) }}</td>
         </tr>
     {% endfor %}
 </table>
