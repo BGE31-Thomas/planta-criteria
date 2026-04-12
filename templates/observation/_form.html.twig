@@ -2,7 +2,7 @@
 
 {{ form_row(observationForm.date_heure) }}
 {{ form_row(observationForm.lieu) }}
-
+<datalist id="communes-list"></datalist>
 <table>
     <tr>
         <th>Organe</th>
@@ -29,6 +29,33 @@
             dateFormat: "d-m-Y",
             locale: "fr",
             maxDate: "today"
+        });
+
+        const input = document.querySelector('#{{ observationForm.lieu.vars.id }}');
+        const datalist = document.getElementById('communes-list');
+
+        let timeout = null;
+
+        input.addEventListener('input', function () {
+            clearTimeout(timeout);
+
+            const query = this.value;
+
+            if (query.length < 2) return;
+
+            timeout = setTimeout(() => {
+                fetch('/api/communes?q=' + encodeURIComponent(query))
+                    .then(response => response.json())
+                    .then(data => {
+                        datalist.innerHTML = '';
+
+                        data.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.text;
+                            datalist.appendChild(option);
+                        });
+                    });
+            }, 200);
         });
     });
 </script>
