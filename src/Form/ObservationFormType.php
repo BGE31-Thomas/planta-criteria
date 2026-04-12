@@ -25,11 +25,13 @@ class ObservationFormType extends AbstractType
                 // adds a class that can be selected in JavaScript
                 'attr' => ['class' => 'js-datepicker'],
             ])
+            
             ->add('observationsCritere', CollectionType::class, [
                 'entry_type' => ObservationCritereFormType::class,
                 'allow_add' => true,
                 'by_reference' => false
             ]);
+       
     }
 
     public function configureOptions(OptionsResolver $resolver)
