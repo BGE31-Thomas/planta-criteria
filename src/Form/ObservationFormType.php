@@ -18,7 +18,7 @@ class ObservationFormType extends AbstractType
             ->add('lieu')
             ->add('date_heure', DateType::class, [
                 'widget' => 'single_text',
-
+                'label' => 'Date',
                 // prevents rendering it as type="date", to avoid HTML5 date pickers
                 'html5' => false,
 

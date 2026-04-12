@@ -19,7 +19,7 @@
     {% endfor %}
 </table>
 
-<button>Enregistrer</button>
+<button class="btn btn-danger mt-4">Enregistrer</button>
 
 {{ form_end(observationForm, { render_rest: false }) }}
 
@@ -27,7 +27,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         flatpickr(".js-datepicker", {
             dateFormat: "d-m-Y",
-            locale: "fr"
+            locale: "fr",
+            maxDate: "today"
         });
     });
 </script>
