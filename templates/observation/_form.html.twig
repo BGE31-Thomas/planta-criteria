@@ -22,3 +22,12 @@
 <button>Enregistrer</button>
 
 {{ form_end(observationForm, { render_rest: false }) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr(".js-datepicker", {
+            dateFormat: "d-m-Y",
+            locale: "fr"
+        });
+    });
+</script>

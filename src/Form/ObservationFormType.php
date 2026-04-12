@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ObservationFormType extends AbstractType
 {
@@ -16,8 +16,14 @@ class ObservationFormType extends AbstractType
         $builder
 
             ->add('lieu')
-            ->add('date_heure', DateTimeType::class, [
-                'date_label' => 'Date',
+            ->add('date_heure', DateType::class, [
+                'widget' => 'single_text',
+
+                // prevents rendering it as type="date", to avoid HTML5 date pickers
+                'html5' => false,
+
+                // adds a class that can be selected in JavaScript
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('observationsCritere', CollectionType::class, [
                 'entry_type' => ObservationCritereFormType::class,
