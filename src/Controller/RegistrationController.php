@@ -73,7 +73,7 @@ class RegistrationController extends AbstractController
             //On récupère l'utilisateur en fonction de l'user_id du payload
             $user = $usersRepository->find($payload['user_id']);
             //On vérifie que l'utilisateur existe et qu'il n'a pas déjà été activé
-            if ($user AND !$user->getIsVerified()){
+            if ($user AND !$user->isVerified()){
                 //On l'active
                 $user->setIsVerified(true);
                 //On enregistre les données dans la base
