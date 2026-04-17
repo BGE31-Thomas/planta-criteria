@@ -16,6 +16,8 @@ final class SourceController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('source/index.html.twig', [
             'controller_name' => 'SourceController',
         ]);
@@ -24,6 +26,8 @@ final class SourceController extends AbstractController
     #[Route('/add', name: 'add')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $source = new Source();
         $sourceForm = $this->createForm(SourceFormType::class, $source);
 

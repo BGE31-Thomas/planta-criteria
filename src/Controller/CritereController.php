@@ -20,6 +20,8 @@ final class CritereController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('critere/index.html.twig', [
             'controller_name' => 'CritereController',
         ]);
@@ -34,7 +36,7 @@ final class CritereController extends AbstractController
             int $id
         ): Response
     {
-       /*  $this->denyAccessUnlessGranted('ROLE_ADMIN'); */
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $critere = new Critere();
         
@@ -79,7 +81,7 @@ final class CritereController extends AbstractController
         PicturesService $picturesService,
         ?int $idPlante): Response
     {
-        /* $this->denyAccessUnlessGranted('PRODUCT_EDIT',$critere); */
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $critereForm = $this->createForm(CritereFormType::class, $critere);
 
@@ -119,7 +121,7 @@ final class CritereController extends AbstractController
     #[Route('/delete/{id}/{idPlante}', name: 'delete')]
     public function delete(Critere $critere,EntityManagerInterface $em, int $idPlante): Response
     {
-        $this->denyAccessUnlessGranted('PRODUCT_DELETE',$critere,);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN',$critere,);
         
         $em->remove($critere);
         $em->flush(); 
@@ -135,6 +137,7 @@ final class CritereController extends AbstractController
         PicturesService $picturesService
     ): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if (!$image) {
             return new JsonResponse(['error' => 'Image introuvable'], 404);
         }

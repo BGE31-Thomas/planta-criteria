@@ -16,12 +16,22 @@ final class SearchController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
+        return $this->redirectToRoute('app_login');
+    }
+
+    #[Route('/plantes', name: 'app_plantes')]
+    public function plantes(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('search/index.html.twig');
     }
 
     #[Route('/plant/{id}', name: 'app_plant_show')]
     public function show(int $id, TaxrefRepository $repo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $taxref = $repo->find($id);
 
         if (!$taxref) {
@@ -54,6 +64,8 @@ final class SearchController extends AbstractController
     #[Route('/export/pdf/{id}', name: 'app_export_pdf')]
     public function exportPdf(Pdf $knpSnappyPdf, int $id, TaxrefRepository $repo): Response
     {
+         $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $plant = $repo->find($id);
         $nom = $plant->getNomCompletHtml();
         $criteres = $plant->getCriteres()->toArray();
@@ -82,6 +94,8 @@ final class SearchController extends AbstractController
     #[Route('/search', name: 'app_search')]
     public function search(Request $request, TaxrefRepository $repo): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $q = $request->query->get('q');
 
         $results = $repo->createQueryBuilder('t')

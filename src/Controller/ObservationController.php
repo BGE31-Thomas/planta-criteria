@@ -13,12 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/observation', name: 'app_admin_observation_')]
+#[Route('/observation', name: 'app_observation_')]
 final class ObservationController extends AbstractController
 {
     #[Route('/', name: 'index')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('source/index.html.twig', [
             'controller_name' => 'SourceController',
         ]);
@@ -27,6 +28,8 @@ final class ObservationController extends AbstractController
     #[Route('/add/{idPlante}', name: 'add')]
     public function new(Request $request, EntityManagerInterface $em, int $idPlante): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $observation = new Observation();
         
         $plante = $em->getRepository(Taxref::class)->find($idPlante);
@@ -55,7 +58,7 @@ final class ObservationController extends AbstractController
                 return $this->redirect($redirectUrl);
             }
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_plantes');
         }
 
         return $this->render('observation/add.html.twig', [
