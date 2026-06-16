@@ -15,6 +15,16 @@
             <td>{{ oc.vars.data.critere.organe }}</td>
             <td>{{ oc.vars.data.critere.description }}</td>
             <td>{{ form_widget(oc.statut) }}</td>
+            <td>
+                {{ form_widget(oc.images, {
+                    attr: {
+                        class: 'image-input'
+                    }
+                }) }}
+            </td>
+        </tr>
+        <tr>
+            <div class="preview-container"></div>
         </tr>
     {% endfor %}
 </table>
@@ -27,6 +37,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         flatpickr(".js-datepicker", {
             dateFormat: "d-m-Y",
+            altInput: true,
+            altFormat: "d-m-Y",
+            dateFormat: "Y-m-d", // IMPORTANT
             locale: "fr",
             maxDate: "today"
         });
@@ -56,6 +69,30 @@
                         });
                     });
             }, 200);
+        });
+
+        document.querySelectorAll('.image-input').forEach(input => {
+
+            input.addEventListener('change', function (event) {
+
+                const container = this.closest('td').querySelector('.preview-container');
+                container.innerHTML = '';
+
+                Array.from(event.target.files).forEach(file => {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.marginRight = '5px';
+                        container.appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            });
         });
     });
 </script>

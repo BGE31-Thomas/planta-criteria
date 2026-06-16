@@ -27,6 +27,10 @@ class Image
     #[ORM\JoinColumn(name: "critere_id", referencedColumnName: "id")]
     private ?Critere $critere;
 
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?ObservationCritere $observationCritere = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +80,18 @@ class Image
       public function setCritere(?Critere $critere): static
     {
         $this->critere = $critere;
+
+        return $this;
+    }
+
+    public function getObservationCritere(): ?ObservationCritere
+    {
+        return $this->observationCritere;
+    }
+
+    public function setObservationCritere(?ObservationCritere $observationCritere): self
+    {
+        $this->observationCritere = $observationCritere;
 
         return $this;
     }

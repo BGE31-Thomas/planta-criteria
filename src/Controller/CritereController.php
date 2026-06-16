@@ -81,7 +81,10 @@ final class CritereController extends AbstractController
         PicturesService $picturesService,
         ?int $idPlante): Response
     {
+        
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+
 
         $critereForm = $this->createForm(CritereFormType::class, $critere);
 

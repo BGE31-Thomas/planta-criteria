@@ -22,7 +22,12 @@ class Critere
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: "critere")]
+    #[ORM\OneToMany(
+        targetEntity: Image::class,
+        mappedBy: "critere",
+        orphanRemoval: true,
+        cascade: ["persist", "remove"]
+    )]
     private Collection $images;
 
     #[ORM\ManyToOne(targetEntity: Taxref::class)]
@@ -71,9 +76,13 @@ class Critere
         return $this;
     }
 
-    public function removeImage (Image $image): static
+    public function removeImage(Image $image): static
     {
-        $this->images->removeElement($image);
+        if ($this->images->removeElement($image)) {
+            if ($image->getCritere() === $this) {
+                $image->setCritere(null);
+            }
+        }
 
         return $this;
     }

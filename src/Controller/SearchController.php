@@ -64,10 +64,10 @@ final class SearchController extends AbstractController
     #[Route('/export/pdf/{id}', name: 'app_export_pdf')]
     public function exportPdf(Pdf $knpSnappyPdf, int $id, TaxrefRepository $repo): Response
     {
-         $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         
         $plant = $repo->find($id);
-        $nom = $plant->getNomCompletHtml();
+        $nom = $plant->getNom();
         $criteres = $plant->getCriteres()->toArray();
         $synonymes = $repo->findBy(['cd_ref' => $plant->getCdNom()]);
 

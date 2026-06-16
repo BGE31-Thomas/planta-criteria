@@ -53,8 +53,8 @@ class PicturesService
                 $src_y = 0;
                 break;
             case 1: //paysage
-                $squareSize = $imageWidth;
-                $src_x = ($imageHeight - $squareSize) / 2;
+                $squareSize = $imageHeight;
+                $src_x = ($imageWidth - $squareSize) / 2;
                 $src_y = 0;
                 break;
         }
