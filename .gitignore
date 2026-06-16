@@ -11,6 +11,8 @@
 /TAXREFv18.csv
 /public/assets/uploads/criteres/
 /019HexaSmal.csv
+/export
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
