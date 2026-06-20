@@ -37,7 +37,7 @@ class ImporTaxrefCommand extends Command
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
-{
+	{
 	    $filePath = __DIR__ . '/../../TAXREFv18.csv';
 
 	    if (!file_exists($filePath)) {
@@ -66,7 +66,8 @@ class ImporTaxrefCommand extends Command
 			$taxref->setNom($row[$columns['NOM_COMPLET']]);
 			$taxref->setNomCompletHtml($row[$columns['NOM_COMPLET_HTML']]);
 			$taxref->setFamille($row[$columns['FAMILLE']]);
-			/* $taxref->setRang($row[$columns['RANG']]); */
+			$taxref->setLbNom($row[$columns['LB_NOM']]);
+			$taxref->setLbAuteur($row[$columns['LB_AUTEUR']]);
 
 			$this->entityManager->persist($taxref);
 

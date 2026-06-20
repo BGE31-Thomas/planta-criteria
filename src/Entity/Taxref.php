@@ -27,19 +27,25 @@ class Taxref
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(targetEntity: Taxref::class)]
+    #[ORM\Column(length: 255)]
+    private ?string $lb_nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lb_auteur = null;
+
+   /*  #[ORM\ManyToOne(targetEntity: Taxref::class)]
     #[ORM\JoinColumn(name: "cd_ref", referencedColumnName: "cd_nom")]
     private Taxref $nomValide;
 
     #[ORM\OneToMany(targetEntity: Taxref::class, mappedBy: "nomValide")]
-    private Collection $synonymes;
+    private Collection $synonymes; */
 
     #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "plante")]
     private Collection $criteres;
 
      public function __construct()
     {
-        $this->synonymes = new ArrayCollection();
+        //$this->synonymes = new ArrayCollection();
         $this->criteres = new ArrayCollection();
     }
 
@@ -92,7 +98,7 @@ class Taxref
         return $this;
     }
 
-    public function getSynonymes(): Collection
+    /* public function getSynonymes(): Collection
     {
         return $this->synonymes;
     }
@@ -116,9 +122,16 @@ class Taxref
     public function getNomValide(): ?Taxref
     {
         return $this->nomValide;
-    }
+    } 
 
-     public function getCriteres(): Collection
+    public function setNomValide(?Taxref $nomValide): static
+    {
+        $this->nomValide = $nomValide;
+
+        return $this;
+    }*/
+
+    public function getCriteres(): Collection
     {
         return $this->criteres;
     }
@@ -139,13 +152,6 @@ class Taxref
         return $this;
     }
 
-    public function setNomValide(?Taxref $nomValide): static
-    {
-        $this->nomValide = $nomValide;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -154,6 +160,30 @@ class Taxref
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getLbNom(): ?string
+    {
+        return $this->lb_nom;
+    }
+
+    public function setLbNom(string $lb_nom): static
+    {
+        $this->lb_nom = $lb_nom;
+
+        return $this;
+    }
+
+    public function getLbAuteur(): ?string
+    {
+        return $this->lb_auteur;
+    }
+
+    public function setLbAuteur(string $lb_auteur): static
+    {
+        $this->lb_auteur = $lb_auteur;
 
         return $this;
     }
