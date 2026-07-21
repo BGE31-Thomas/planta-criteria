@@ -42,9 +42,43 @@ class ImportFloreCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-	    $filePath = __DIR__ . '/../../export/pterido_g.csv';
+		$array_files = [
+				'gymno_g.csv',
+				'gymno_se.csv',
+				'gymno.csv',
+				'gymno_c.csv',
+				'monocotyledones.csv',
+				'monocotyledones_g.csv',
+				'monocotyledones_se.csv',
+				'monocotyledones_c.csv',
+				'pterido_g.csv',
+				'pterido.csv',
+				'pterido_se.csv',
+				'pterido_c.csv',
+				'dicotyledones.csv',
+				'dicotyledones_g.csv',
+				'dicotyledones_se.csv',
+				'dicotyledones_c.csv'
+			];
+			/* $array_files = [
+				
+				'dicotyledones_c.csv'
+			]; */
+			foreach ($array_files as $file) {
+					$result = $this->importFile($file, $output);
+					if ($result !== Command::SUCCESS) {
+							return $result;
+					}
+			}
+
+			return Command::SUCCESS;
+	}
+
+	public function importFile(string $filePath,OutputInterface $output): int
+	{
+		$filePath = __DIR__ . "/../../export/$filePath";
 
 	    if (!file_exists($filePath)) {
 			$output->writeln('Fichier introuvable');
@@ -53,17 +87,17 @@ class ImportFloreCommand extends Command
 
 	    $handle = fopen($filePath, 'r');
 
-	    $header = fgetcsv($handle, 0, ",");
+	    $header = fgetcsv($handle, 0, ";");
 
 	    $columns = array_flip($header);
     
 	    $batchSize = 500;
 	    $i = 0;
 
-	    while (($row = fgetcsv($handle, 0, ",")) !== false) {
+	    while (($row = fgetcsv($handle, 0, ";")) !== false) {
 
 			$critere = new Critere();
-			
+			$output->writeln($row[$columns['lb_nom']]);
 			if(in_array("lb_auteur", $header)){
 		
 				$plante = $this->taxrefRepository->findByLbNomAndLbAuteur($row[$columns['lb_nom']], $row[$columns['lb_auteur']]); $plante = $this->taxrefRepository->findByLbNomAndLbAuteur($row[$columns['lb_nom']], $row[$columns['lb_auteur']]);
@@ -74,7 +108,7 @@ class ImportFloreCommand extends Command
 			}
            
 			if (!$plante) {
-				$output->writeln("Plante non trouvée : " . $row[$columns['lb_nom']] . " " . $row[$columns['lb_auteur']]);
+				$output->writeln("Plante non trouvée : " . $row[$columns['lb_nom']]);
 				die();
 			}
 			$critere->setPlante($plante);

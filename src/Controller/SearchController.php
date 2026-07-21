@@ -99,9 +99,9 @@ final class SearchController extends AbstractController
         $q = $request->query->get('q');
 
         $results = $repo->createQueryBuilder('t')
-            ->where('t.nom_complet_html LIKE :q')
+            ->where('t.lb_nom LIKE :q')
             ->setParameter('q', "%$q%")
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

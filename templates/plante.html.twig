@@ -3,6 +3,9 @@
 {% block body %}
 <h1>{{ plant.nomCompletHtml|raw }}</h1>
 
+<h3>Famille</h3>
+<p>{{ plant.famille }}</p>
+
 <h3>Synonymes</h3>
 <ul>
     {% for syn in synonymes %}
