@@ -46,7 +46,7 @@ class Taxref
     #[ORM\OneToMany(mappedBy: 'plante', targetEntity: Observation::class)]
     private Collection $observations;
 
-     public function __construct()
+    public function __construct()
     {
         $this->synonymes = new ArrayCollection();
         $this->criteres = new ArrayCollection();

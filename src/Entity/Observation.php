@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ObservationRepository::class)]
 class Observation
 {
-  #[ORM\Id]
+    #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
@@ -20,7 +20,7 @@ class Observation
     private Serie $serie;
 
     #[ORM\ManyToOne(inversedBy: 'observations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "plante_id", referencedColumnName: "cd_nom")]
     private ?Taxref $plante = null;
 
     #[ORM\OneToMany(
