@@ -15,11 +15,9 @@ class Observation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $date_heure = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $lieu = null;
+    #[ORM\ManyToOne(inversedBy: 'observations', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Serie $serie;
 
     #[ORM\OneToMany(mappedBy: 'observation', targetEntity: ObservationCritere::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $observationsCritere;
@@ -34,26 +32,14 @@ class Observation
         return $this->id;
     }
 
-    public function getDateHeure(): ?\DateTime
+    public function getSerie(): Serie
     {
-        return $this->date_heure;
+        return $this->serie;
     }
 
-    public function setDateHeure(\DateTime $date_heure): static
+    public function setSerie(Serie $serie): self
     {
-        $this->date_heure = $date_heure;
-
-        return $this;
-    }
-
-    public function getLieu(): ?string
-    {
-        return $this->lieu;
-    }
-
-    public function setLieu(string $lieu): static
-    {
-        $this->lieu = $lieu;
+        $this->serie = $serie;
 
         return $this;
     }

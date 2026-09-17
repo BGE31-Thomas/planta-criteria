@@ -44,7 +44,7 @@ final class SourceController extends AbstractController
             }
 
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_plantes');
         }
 
         return $this->render('source/add.html.twig', [

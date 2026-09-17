@@ -1,0 +1,68 @@
+{{form_start(serieForm)}}
+    {{ form_row(serieForm.date) }}
+    {{ form_row(serieForm.lieu) }}
+    <datalist id="communes-list"></datalist>
+{{ form_end(serieForm) }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr(".js-datepicker", {
+            dateFormat: "d-m-Y",
+            altInput: true,
+            altFormat: "d-m-Y",
+            dateFormat: "Y-m-d", // IMPORTANT
+            locale: "fr",
+            maxDate: "today"
+        });
+
+        const input = document.querySelector('#{{ observationForm.lieu.vars.id }}');
+        const datalist = document.getElementById('communes-list');
+
+        let timeout = null;
+
+        input.addEventListener('input', function () {
+            clearTimeout(timeout);
+
+            const query = this.value;
+
+            if (query.length < 2) return;
+
+            timeout = setTimeout(() => {
+                fetch('/api/communes?q=' + encodeURIComponent(query))
+                    .then(response => response.json())
+                    .then(data => {
+                        datalist.innerHTML = '';
+
+                        data.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.text;
+                            datalist.appendChild(option);
+                        });
+                    });
+            }, 200);
+        });
+
+        document.querySelectorAll('.image-input').forEach(input => {
+
+            input.addEventListener('change', function (event) {
+
+                const container = this.closest('td').querySelector('.preview-container');
+                container.innerHTML = '';
+
+                Array.from(event.target.files).forEach(file => {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.marginRight = '5px';
+                        container.appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+    });
+</script>
