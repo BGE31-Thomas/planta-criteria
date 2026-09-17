@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ObservationRepository::class)]
 class Observation
 {
-    #[ORM\Id]
+  #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
@@ -19,7 +19,16 @@ class Observation
     #[ORM\JoinColumn(nullable: false)]
     private Serie $serie;
 
-    #[ORM\OneToMany(mappedBy: 'observation', targetEntity: ObservationCritere::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\ManyToOne(inversedBy: 'observations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Taxref $plante = null;
+
+    #[ORM\OneToMany(
+        mappedBy: 'observation',
+        targetEntity: ObservationCritere::class,
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
     private Collection $observationsCritere;
 
     public function __construct()
@@ -66,6 +75,18 @@ class Observation
                 $observationsCritere->setObservation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlante(): ?Taxref
+    {
+        return $this->plante;
+    }
+
+    public function setPlante(?Taxref $plante): static
+    {
+        $this->plante = $plante;
 
         return $this;
     }

@@ -33,19 +33,22 @@ class Taxref
     #[ORM\Column(length: 255)]
     private ?string $lb_auteur = null;
 
-   /*  #[ORM\ManyToOne(targetEntity: Taxref::class)]
+    #[ORM\ManyToOne(targetEntity: Taxref::class)]
     #[ORM\JoinColumn(name: "cd_ref", referencedColumnName: "cd_nom")]
     private Taxref $nomValide;
 
     #[ORM\OneToMany(targetEntity: Taxref::class, mappedBy: "nomValide")]
-    private Collection $synonymes; */
+    private Collection $synonymes; 
 
     #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: "plante")]
     private Collection $criteres;
 
+    #[ORM\OneToMany(mappedBy: 'plante', targetEntity: Observation::class)]
+    private Collection $observations;
+
      public function __construct()
     {
-        //$this->synonymes = new ArrayCollection();
+        $this->synonymes = new ArrayCollection();
         $this->criteres = new ArrayCollection();
     }
 
@@ -98,7 +101,7 @@ class Taxref
         return $this;
     }
 
-    /* public function getSynonymes(): Collection
+    public function getSynonymes(): Collection
     {
         return $this->synonymes;
     }
@@ -129,7 +132,7 @@ class Taxref
         $this->nomValide = $nomValide;
 
         return $this;
-    }*/
+    }
 
     public function getCriteres(): Collection
     {
@@ -187,5 +190,28 @@ class Taxref
 
         return $this;
     }
+
+    public function getObservations(): Collection
+    {
+        return $this->observations;
+    }
+
+    public function addObservation(Observation $observation): static
+    {
+        if (!$this->observations->contains($observation)) {
+            $this->observations->add($observation);
+        }
+
+        return $this;
+    }
+
+    public function removeObservation(Observation $observation): static
+    {
+        $this->observations->removeElement($observation);
+
+        return $this;
+    }
+
+    
 
 }

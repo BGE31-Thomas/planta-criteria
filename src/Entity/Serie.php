@@ -25,7 +25,7 @@ class Serie
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date = null;
 
-    #[ORM\OneToMany(mappedBy: 'observations', targetEntity: Observation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'serie', targetEntity: Observation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $observations;
 
     public function __construct()
@@ -92,12 +92,7 @@ class Serie
 
     public function removeObservation(Observation $observation): static
     {
-        if ($this->observations->removeElement($observation)) {
-            if ($observation->getSerie() === $this) {
-                // @phpstan-ignore-next-line
-                $observation->setSerie(null);
-            }
-        }
+        $this->observations->removeElement($observation);
 
         return $this;
     }
